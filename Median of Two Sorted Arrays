@@ -1,0 +1,78 @@
+class Solution 
+{
+    public double findMedianSortedArrays(int[] nums1, int[] nums2)
+    { 
+        if (nums1.length>nums2.length)
+        {
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+        }
+        
+        int lengthFinal = nums1.length+nums2.length;
+        
+        int left = 0;
+        int right = nums1.length;
+        
+        while(left<=right)
+        {
+            int middleNums1 = (left+right)/2;
+            int restNums2 = (lengthFinal+1)/2 - middleNums1;
+            
+            int leftMid = maxTwoNum(nums1, middleNums1);
+            int rightMid = minTwoNum(nums1, middleNums1); 
+            
+            int leftNums2 = maxTwoNum(nums2, restNums2);
+            int rightNums2 = minTwoNum(nums2, restNums2);
+            
+            if (leftMid<=rightNums2 && leftNums2<=rightMid)
+            {
+                if (lengthFinal % 2 == 0)
+                {
+                    return 1.0*(Math.max(leftMid, leftNums2) +                                                     Math.min(rightMid, rightNums2))/2;
+                }
+                else
+                {
+                    return Math.max(leftMid, leftNums2);
+                }
+            }
+       
+            if (leftMid>rightNums2)
+            {
+                right = middleNums1 - 1;
+            }
+            else
+            {
+                left = middleNums1 + 1;
+            }
+         }
+        
+         return 0;
+    }
+    
+
+    private int maxTwoNum(int[] arr, int part)
+    {
+        if (part == 0)
+        {
+            return Integer.MIN_VALUE;
+        }
+        else
+        {
+            return arr[part-1];
+        }
+    }
+    
+    private int minTwoNum(int[] arr, int part)
+    {
+        if (part == arr.length)
+        {
+            return Integer.MAX_VALUE;
+        }
+        else
+        {
+            return arr[part];
+        }   
+    }
+    
+}
